@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Virtual Pet Simulator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      background: #fef6e4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #333;
+    }
+    .pet {
+      width: 150px;
+      height: 150px;
+      background: url('https://cdn-icons-png.flaticon.com/512/616/616408.png') no-repeat center/contain;
+      margin: 20px auto;
+    }
+    .stats {
+      margin: 20px auto;
+      max-width: 400px;
+    }
+    .bar {
+      background: #eee;
+      border-radius: 10px;
+      margin: 10px 0;
+      height: 20px;
+      overflow: hidden;
+    }
+    .fill {
+      height: 100%;
+      border-radius: 10px;
+    }
+    .hunger { background: #f44336; }
+    .energy { background: #2196f3; }
+    .happiness { background: #4caf50; }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 16px;
+      background: #ffc107;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #ff9800;
+    }
+    #mood {
+      font-size: 18px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🐶 Virtual Pet Simulator</h1>
+
+  <div class="pet"></div>
+
+  <div class="stats">
+    <div>Hunger</div>
+    <div class="bar"><div class="fill hunger" id="hungerFill" style="width: 80%"></div></div>
+
+    <div>Energy</div>
+    <div class="bar"><div class="fill energy" id="energyFill" style="width: 70%"></div></div>
+
+    <div>Happiness</div>
+    <div class="bar"><div class="fill happiness" id="happinessFill" style="width: 75%"></div></div>
+  </div>
+
+  <div>
+    <button onclick="feed()">🍖 Feed</button>
+    <button onclick="play()">🎾 Play</button>
+    <button onclick="sleep()">😴 Sleep</button>
+  </div>
+
+  <div id="mood">Mood: 😊 Happy</div>
+
+  <script>
+    let hunger = 80;
+    let energy = 70;
+    let happiness = 75;
+
+    function updateStats() {
+      document.getElementById("hungerFill").style.width = hunger + "%";
+      document.getElementById("energyFill").style.width = energy + "%";
+      document.getElementById("happinessFill").style.width = happiness + "%";
+
+      let mood = "😊 Happy";
+      if (hunger < 30) mood = "🥺 Hungry";
+      if (energy < 30) mood = "😴 Tired";
+      if (happiness < 30) mood = "😢 Sad";
+      document.getElementById("mood").textContent = "Mood: " + mood;
+    }
+
+    function feed() {
+      hunger = Math.min(100, hunger + 20);
+      energy = Math.max(0, energy - 5);
+      updateStats();
+    }
+
+    function play() {
+      happiness = Math.min(100, happiness + 20);
+      energy = Math.max(0, energy - 15);
+      hunger = Math.max(0, hunger - 10);
+      updateStats();
+    }
+
+    function sleep() {
+      energy = Math.min(100, energy + 25);
+      hunger = Math.max(0, hunger - 10);
+      updateStats();
+    }
+
+    // Stats decrease over time
+    setInterval(() => {
+      hunger = Math.max(0, hunger - 2);
+      energy = Math.max(0, energy - 1);
+      happiness = Math.max(0, happiness - 1);
+      updateStats();
+    }, 3000); // Every 3 seconds
+  </script>
+
+</body>
+</html>
